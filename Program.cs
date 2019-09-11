@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConsoleApp.SQLite
 {
@@ -8,7 +9,8 @@ namespace ConsoleApp.SQLite
         {
             using (var db = new BloggingContext())
             {
-                db.Blogs.Add(new Blog { Url = "http://blogs.msdn.com/adonet", Description = "ADO Blog" });
+                db.Database.Migrate();
+                db.Blogs.Add(new Blog { Url = "http://blogs.msdn.com/adonet", Description = "ADO Blog", Publisher = "Microsoft" });
                 var count = db.SaveChanges();
                 Console.WriteLine("{0} records saved to database", count);
 
@@ -16,7 +18,7 @@ namespace ConsoleApp.SQLite
                 Console.WriteLine("All blogs in database:");
                 foreach (var blog in db.Blogs)
                 {
-                    Console.WriteLine(" - {0} - {1}", blog.Url, blog.Description);
+                    Console.WriteLine(" - {0} - {1} - {2}", blog.Url, blog.Description, blog.Publisher);
                 }
             }
         }
